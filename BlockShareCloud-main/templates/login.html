@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DE-STORAGE</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background: linear-gradient(to right, #004e92, #000428);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      display: flex;
+      width: 800px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
+
+    .left {
+      width: 50%;
+      background: radial-gradient(circle at center, #0062ff 0%, #003a75 100%);
+      color: white;
+      padding: 3rem 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .left h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .left h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .left p {
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .right {
+      width: 50%;
+      padding: 3rem 2rem;
+    }
+
+    .right h2 {
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
+
+    .right p {
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+      color: #777;
+    }
+
+    .input-box {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+
+    .input-box input {
+      width: 100%;
+      padding: 0.75rem 2.5rem 0.75rem 2.5rem;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      outline: none;
+    }
+
+    .input-box i {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+    }
+
+    .options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .options input[type="checkbox"] {
+      margin-right: 5px;
+    }
+
+    .right button {
+      width: 100%;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background-color: #003a75;
+      color: white;
+      margin-bottom: 1rem;
+    }
+
+    .btn-secondary {
+      background-color: white;
+      border: 1px solid #003a75;
+      color: #003a75;
+    }
+
+    .signup-link {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.85rem;
+    }
+
+    .signup-link a {
+      color: #003a75;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
+    
+    .error-msg {
+      color: red;
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left">
+      <h1>WELCOME</h1>
+      <h3>STORE IT</h3>
+      <p>StoreIt - Your personal cloud vault, where security meets simplicity.</p>
+    </div>
+
+    <div class="right">
+      <!-- Login Form -->
+      <div id="login-form">
+        <h2>Sign in</h2>
+        <p>StoreIt - Your gateway to a smarter, safer cloud.</p>
+        <div class="error-msg" id="login-error"></div>
+        <form id="loginForm">
+          <div class="input-box">
+            <input type="text" name="username" placeholder="User Name" required />
+          </div>
+          <div class="input-box">
+            <input type="password" name="password" placeholder="Password" required />
+          </div>
+          <div class="options">
+            <label><input type="checkbox" /> Remember me</label>
+            <a href="#">Forgot Password?</a>
+          </div>
+          <button type="submit" class="btn-primary">Sign in</button>
+        </form>
+        <div class="signup-link">
+          <p>Don't have an account? <a onclick="toggleForms()">Sign up</a></p>
+        </div>
+      </div>
+
+      <!-- Signup Form -->
+      <div id="signup-form" class="hidden">
+        <h2>Create Account</h2>
+        <p>Fill the form to create your account.</p>
+        <div class="error-msg" id="signup-error"></div>
+        <form id="signupForm">
+          <div class="input-box">
+            <input type="text" name="fullname" placeholder="Full Name" required />
+          </div>
+          <div class="input-box">
+            <input type="email" name="email" placeholder="Email" required />
+          </div>
+          <div class="input-box">
+            <input type="password" name="password" placeholder="Password" required />
+          </div>
+          <button type="submit" class="btn-primary">Sign up</button>
+        </form>
+        <div class="signup-link">
+          <p>Already have an account? <a onclick="toggleForms()">Sign in</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AJAX & TOGGLE SCRIPT -->
+  <script>
+    function toggleForms() {
+      document.getElementById('login-form').classList.toggle('hidden');
+      document.getElementById('signup-form').classList.toggle('hidden');
+    }
+
+    // LOGIN AJAX
+    document.getElementById('loginForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData.entries());
+
+      const res = await fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+
+      if (result.status === 'success') {
+        window.location.href = '/dashboard';
+      } else {
+        document.getElementById('login-error').textContent = result.message;
+      }
+    });
+
+    // SIGNUP AJAX
+    document.getElementById('signupForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData.entries());
+
+      const res = await fetch('/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+
+      if (result.status === 'success') {
+        window.location.href = '/dashboard';
+      } else {
+        document.getElementById('signup-error').textContent = result.message;
+      }
+    });
+  </script>
+</body>
+</html>
