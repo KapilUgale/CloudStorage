@@ -29,23 +29,29 @@ The system allows users to securely upload, store, and retrieve files using IPFS
 
 # 📸 Project Screenshots
 
+## 🏠 Landing Page
+![Landing Page](screenshots/landingpage.png)
+
+---
+
 ## 🏠 Home Page
-![Home Page](screenshots/home.png)
+![Home Page](screenshots/homepage.png)
 
 ---
 
 ## 📤 File Upload Interface
-![Upload Interface](screenshots/upload.png)
+![Upload Interface](screenshots/demo2-1.png)
 
 ---
 
 ## 📥 File Download Interface
-![Download Interface](screenshots/download.png)
+![Download Interface](screenshots/demo2.png)
 
 ---
 
 ## ⛓️ Blockchain Records
-![Blockchain Records](screenshots/blockchain.png)
+![Blockchain Records](screenshots/demo4.png)
+
 
 
 
